@@ -1,0 +1,7 @@
+---
+
+- name: Raw install python and python3-apt
+  ansible.builtin.raw: apt update && apt install -y python3 python3-apt
+
+
+...
