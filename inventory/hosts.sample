@@ -1,6 +1,6 @@
 # put here servers you have to bootstrap
 
-[all]
+[raspberrypios]
 192.168.1.1
 my.rpi.local
 

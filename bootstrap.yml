@@ -1,11 +1,11 @@
 ---
 # this playbook must be used only once to create the ansible user.
 
-- name: Bootstrap ansible and creating ansible user
+- name: Bootstrap ansible and creating ansible user on Raspberry Pi OS hosts
   remote_user: "{{ bootstrap_remote_user }}"
   become: yes
-  hosts: all
+  hosts: raspberrypios
   gather_facts: no
   roles:
-    - bootstrap
+    - bootstrap_raspberrypios
 ...
