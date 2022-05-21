@@ -1,7 +1,4 @@
 ---
-# the original user which is able to sudo: pi
-bootstrap_remote_user: pi
-
 # account for ansible
 deploy_account: ansible
 
