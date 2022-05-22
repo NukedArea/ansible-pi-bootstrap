@@ -34,4 +34,10 @@
     mode: '0440'
     validate: 'visudo -cf %s'
 
+- name: Set random password for {{ bootstrap_remote_user }}
+  ansible.builtin.user:
+    name: '{{ bootstrap_remote_user }}'
+    password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,ascii_uppercase,digits length=32') | password_hash('sha512', rounds=2048) }}"
+    update_password: always
+
 ...

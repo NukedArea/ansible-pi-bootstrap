@@ -1,7 +1,10 @@
 This ansible project allows to bootstrap a Raspberry Pi OS. That means that
 everything needed to run ansible on the managed node is installed and a
-specific ansible user is created with a random password. It must be used only
-once on each Raspberry you want to manage with ansible.
+specific ansible user is created with a random password. It must be and can be
+used only once on each Raspberry you want to manage with ansible.
+
+At the end, the pi user password is set with a random value. The only
+authentication method is with public key.
 
 It is assumed your ansible deployment machine is running Linux or macOS.
 
