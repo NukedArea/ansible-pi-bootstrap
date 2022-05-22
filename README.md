@@ -117,3 +117,16 @@ Now, boostrap by using the bootstrap playbook.
     ansible-playbook bootstrap.yml --ask-pass
 
 That's done. Raspberry Pi have been boostrapped.
+
+# Caveats
+
+You may encounter problems with apt if your system date is wrong.
+On your ansible control machine, get current timestamp:
+
+    date +%s
+    1653230290
+
+On the misdated machine, set the date, using the same returned value prefixed
+with a `@`:
+
+    sudo sudo date +%s -s @1653230290
