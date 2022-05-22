@@ -6,7 +6,8 @@ used only once on each Raspberry you want to manage with ansible.
 At the end, the pi user password is set with a random value. The only
 authentication method is with public key.
 
-It is assumed your ansible deployment machine is running Linux or macOS.
+It is assumed your ansible deployment machine is running Linux or macOS,
+because Windows is not supported for the control node.
 
 # First, create a SSH key on your local machine
 
@@ -62,9 +63,11 @@ by connecting with SSH: `ssh pi@your.raspberrypi.hostname.or.ip`.
 
 # Install python packages from requirements.txt file
 
-On the ansible manager machine, create a python virtual environment. Use what
-you prefer. You may use [pyenv](https://github.com/pyenv/pyenv). This must be
-done only one.
+On the ansible manager machine, create a python virtual environment (python 3.8
+or newer). Use what you prefer. You may use
+[pyenv](https://github.com/pyenv/pyenv). This must be done only one.
+
+    # using pyenv
 
     # install latest python version
     pyenv install 3.10.4
