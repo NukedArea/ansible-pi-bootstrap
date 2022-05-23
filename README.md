@@ -133,13 +133,11 @@ That's done. Raspberry Pi have been boostrapped.
 
 # Caveats
 
-You may encounter problems with apt if your system date is wrong.
-On your ansible control machine, get current timestamp:
+You may encounter problems with packages manager if your system date is wrong.
+To set the date on all hosts, you may run these commands. The new date will be
+approximate, because `date +%s` command is run at the beginning of the
+playbook, but this will be enough to fix the date problem for now.
 
-    date +%s
-    1653230290
+    # to fix date on raspberrypios hosts (asked password is the one you set when flashing SD card)
+    ansible raspberrypios -u pi -b --ask-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"
 
-On the misdated machine, set the date, using the same returned value prefixed
-with a `@`:
-
-    sudo sudo date +%s -s @1653230290
