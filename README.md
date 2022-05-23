@@ -11,7 +11,8 @@ because Windows is not supported for the control node.
 
 # First, create a SSH key on your local machine
 
-The SSH key authenticates you on your Raspberry Pi OS in a secure way.
+The SSH key authenticates you on your Raspberry Pi OS in a secure way. If you
+already have one, you can skip this section.
 
     mkdir -p ${HOME}/.ssh/
     chmod 0700 ${HOME}/.ssh/
