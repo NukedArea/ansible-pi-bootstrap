@@ -22,7 +22,16 @@ already have one, you can skip this section.
 
 Keep your private key file in a safe place!
 
-# Install your Raspberry Pi OS
+# Install your operating system
+
+## Rocky Linux
+
+Download the [Rocky Linux for Raspberry
+Pi](https://rockylinux.org/alternative-images). As the time of writing, the
+available version is 8.5. Use [Balena Etcher](https://www.balena.io/etcher/) to
+flash the image on your SD card.
+
+## Raspberry Pi OS
 
 Download the [Raspberry Pi OS
 image](https://www.raspberrypi.com/software/operating-systems/), choose the
@@ -37,14 +46,14 @@ Remount your SD card and find the mount point, on macOS, it will be
 This entire section must be repeated on each Raspberry Pi you want to manage
 with ansible.
 
-## Enable SSH at boot on Raspberry Pi OS
+### Enable SSH at boot on Raspberry Pi OS
 
 Just create a `ssh` file in the `boot` partition.
 
     # example, on macOS, find yours, if you are on Linux
     touch /Volumes/boot/ssh
 
-## Create a pi user, with a temporary password on Raspberry Pi OS
+### Create a pi user, with a temporary password on Raspberry Pi OS
 
 Create a `pi` user with a temporary password by creating a `userconf` file in
 the `boot` partition with the specified content.
