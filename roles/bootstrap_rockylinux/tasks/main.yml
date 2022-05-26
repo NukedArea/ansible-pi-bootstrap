@@ -1,0 +1,6 @@
+---
+
+- name: Raw install python3 and python3-libselinux
+  ansible.builtin.raw: dnf install -y python3 python3-libselinux
+
+...

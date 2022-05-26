@@ -125,19 +125,24 @@ The previously defined password will be prompted.
 
 # Bootstrap time
 
-Now, boostrap by using the bootstrap playbook.
+Now, boostrap by using the bootstrap playbook. Playbook must be run in two
+steps, using subsets.
 
-    ansible-playbook bootstrap.yml --ask-pass
+    ansible-playbook bootstrap.yml --limit raspberrypios --ask-pass
+
+    ansible-playbook bootstrap.yml --limit rockylinux --ask-pass --ask-become-pass
 
 That's done. Raspberry Pi have been boostrapped.
 
 # Caveats
 
 You may encounter problems with packages manager if your system date is wrong.
-To set the date on all hosts, you may run these commands. The new date will be
-approximate, because `date +%s` command is run at the beginning of the
+To set the date on all hosts, you may run these ad hoc commands. The new date
+will be approximate, because `date +%s` command is run at the beginning of the
 playbook, but this will be enough to fix the date problem for now.
 
     # to fix date on raspberrypios hosts (asked password is the one you set when flashing SD card)
     ansible raspberrypios -u pi -b --ask-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"
 
+    # to fix date on rockylinux hosts (asked password is rockylinux)
+    ansible rockylinux -u rocky -b --ask-pass --ask-become-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"

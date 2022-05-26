@@ -1,0 +1,4 @@
+---
+# the original user which is able to sudo
+bootstrap_remote_user: rocky
+...

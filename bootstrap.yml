@@ -8,4 +8,12 @@
   gather_facts: no
   roles:
     - bootstrap_raspberrypios
+
+- name: Bootstrap ansible and creating ansible user on Rocky Linux hosts
+  remote_user: "{{ bootstrap_remote_user }}"
+  become: yes
+  hosts: rockylinux
+  gather_facts: no
+  roles:
+    - bootstrap_rockylinux
 ...
