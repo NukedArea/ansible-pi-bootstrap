@@ -18,4 +18,11 @@
     password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,ascii_uppercase,digits length=32') | password_hash('sha512', rounds=2048) }}"
     update_password: on_create
 
+- name: Install ssh public key for {{ deploy_account }} user
+  ansible.posix.authorized_key:
+    user: '{{ deploy_account }}'
+    state: present
+    exclusive: yes
+    key: "{% for key in lookup('env', 'ANSIBLE_SSH_PUBKEY').split(':') %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
+
 ...
