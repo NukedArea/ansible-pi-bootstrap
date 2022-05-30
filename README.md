@@ -1,18 +1,18 @@
-This ansible project allows to bootstrap a Raspberry Pi OS. That means that
-everything needed to run ansible on the managed node is installed and a
-specific ansible user is created with a random password. It must be and can be
-used only once on each Raspberry you want to manage with ansible.
+This ansible project allows to bootstrap a Raspberry Pi OS or Rocky Linux. That
+means that everything needed to run ansible on the managed node is installed
+and a specific ansible user is created with a random password. It must be and
+can be used only once on each Raspberry you want to manage with ansible.
 
-At the end, the pi user password is set with a random value. The only
-authentication method is with public key.
+At the end, the default user password is set with a random value. The only
+authentication method is the public key.
 
 It is assumed your ansible deployment machine is running Linux or macOS,
 because Windows is not supported for the control node.
 
 # First, create a SSH key on your local machine
 
-The SSH key authenticates you on your Raspberry Pi OS in a secure way. If you
-already have one, you can skip this section.
+The SSH key authenticates you on your Raspberry Pi OS or Rocky Linux in a
+secure way. If you already have one, you can skip this section.
 
     mkdir -p ${HOME}/.ssh/
     chmod 0700 ${HOME}/.ssh/
@@ -24,20 +24,27 @@ Keep your private key file in a safe place!
 
 # Install your operating system
 
+You will need [Balena Etcher](https://www.balena.io/etcher/) to flash your SD card.
+
 ## Rocky Linux
 
 Download the [Rocky Linux for Raspberry
 Pi](https://rockylinux.org/alternative-images). As the time of writing, the
-available version is 8.5. Use [Balena Etcher](https://www.balena.io/etcher/) to
-flash the image on your SD card.
+available version is 8.5. Use Balena Etcher to flash the image on your SD card.
+
+That's the only thing you have to do with Rocky Linux for Raspberry Pi.
+
+Boot your Raspberry Pi, find your IP address and check the password
+(rockylinux) is working by connecting with SSH: `ssh
+rocky@your.raspberrypi.hostname.or.ip`.
 
 ## Raspberry Pi OS
 
 Download the [Raspberry Pi OS
 image](https://www.raspberrypi.com/software/operating-systems/), choose the
 Lite version that correspond to your hardware. At the time of writing, the
-available Raspberry Pi OS is bullseye version. Use [Balena
-Etcher](https://www.balena.io/etcher/) to flash the image on your SD card.
+available Raspberry Pi OS is bullseye version. Use Balena Etcher to flash the
+image on your SD card.
 
 Remount your SD card and find the mount point, on macOS, it will be
 `/Volumes/boot/`, on Linux it should be something starting with `/mnt` or
@@ -73,9 +80,10 @@ by connecting with SSH: `ssh pi@your.raspberrypi.hostname.or.ip`.
 
 # Install python packages from requirements.txt file
 
-On the ansible manager machine, create a python virtual environment (python 3.8
-or newer). Use what you prefer. You may use
-[pyenv](https://github.com/pyenv/pyenv). This must be done only one.
+On the ansible manager machine, create a python virtual environment
+([python}](https://www.python.org/downloads/) 3.8 or newer). This step only
+needs to be done once. You may use [pyenv](https://github.com/pyenv/pyenv) or
+what you prefer.
 
     # using pyenv
 
@@ -101,8 +109,8 @@ location.
 
 # Set environment variables
 
-You will have to export some environment variables directly in you shell or, as
-this project, you may use [direnv](https://github.com/direnv/direnv).
+You will have to export some environment variables directly in you shell or you
+may use [direnv](https://github.com/direnv/direnv).
 
 Set `ANSIBLE_INVENTORY` to point to your inventory file according to your
 choice above.
@@ -123,9 +131,12 @@ file will be dropped.
 
 # Test the ansible connection
 
-The previously defined password will be prompted.
+Playbook must be run in two steps, using subsets. The defined password will be
+prompted.
 
-    ansible all -m ping --ask-pass
+    ansible raspberrypios -m ping --ask-pass
+
+    ansible rockylinux -m ping --ask-pass
 
 # Bootstrap time
 
@@ -150,3 +161,5 @@ playbook, but this will be enough to fix the date problem for now.
 
     # to fix date on rockylinux hosts (asked password is rockylinux)
     ansible rockylinux -u rocky -b --ask-pass --ask-become-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"
+
+Then, run the bootstrap section again.
