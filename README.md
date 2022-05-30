@@ -109,13 +109,17 @@ choice above.
 
     export ANSIBLE_INVENTORY=${PWD}/inventory/hosts
 
-Set path to your public SSH key. The public key will be installed on the
+Set path to your public SSH keys. The public keys will be installed on the
 ansible user `authorized_keys` file. If you want to install more than one
-public keys, just separate them with a colon character ':'. Warning, this
+public keys, just separate them with a colon character `:`. Warning, this
 process is exclusive. Old public keys already present in the `authorized_keys`
 file will be dropped.
 
+    # export only one key
     export ANSIBLE_SSH_PUBKEY=${HOME}/.ssh/ansible_key.pub
+
+    # export more than one key
+    export ANSIBLE_SSH_PUBKEY=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
 
 # Test the ansible connection
 
