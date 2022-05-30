@@ -147,7 +147,14 @@ steps, using subsets.
 
     ansible-playbook bootstrap.yml --limit rockylinux --ask-pass --ask-become-pass
 
-That's done. Raspberry Pi have been boostrapped.
+That's done. Raspberry Pi have been boostrapped. Now, you can login through
+SSH, using your private key and become root via `sudo` command without
+password.
+
+    ssh -i $HOME/.ssh/ansible_key ansible@your.raspberrypi.hostname.or.ip
+
+    # become root
+    sudo -i
 
 # Caveats
 
