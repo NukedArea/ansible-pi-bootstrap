@@ -23,7 +23,7 @@
     user: '{{ deploy_account }}'
     state: present
     exclusive: yes
-    key: "{% for key in lookup('env', 'ANSIBLE_SSH_PUBKEY').split(':') %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
+    key: "{% for key in lookup('env', 'SSH_PUBKEYS_TO_INSTALL').split(':') %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
 
 - name: Enable {{ deploy_account }} to use sudo without password
   ansible.builtin.template:

@@ -124,10 +124,10 @@ process is exclusive. Old public keys already present in the `authorized_keys`
 file will be dropped.
 
     # export only one key
-    export ANSIBLE_SSH_PUBKEY=${HOME}/.ssh/ansible_key.pub
+    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub
 
     # export more than one key
-    export ANSIBLE_SSH_PUBKEY=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
+    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
 
 # Test the ansible connection
 
