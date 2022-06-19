@@ -134,9 +134,9 @@ file will be dropped.
 Playbook must be run in two steps, using subsets. The defined password will be
 prompted.
 
-    ansible raspberrypios -m ping --ask-pass
+    ansible raspberrypios -m ping -u pi --ask-pass
 
-    ansible rockylinux -m ping --ask-pass
+    ansible rockylinux -m ping -u rocky --ask-pass
 
 # Bootstrap time
 
