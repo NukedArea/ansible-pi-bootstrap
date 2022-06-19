@@ -1,0 +1,7 @@
+---
+# account for ansible
+deploy_account: ansible
+
+# group for ansible
+deploy_group: users
+...
