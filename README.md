@@ -1,3 +1,5 @@
+# ansible-pi-bootstrap version 1.0.0
+
 This ansible project allows to bootstrap a Raspberry Pi OS or Rocky Linux. That
 means that everything needed to run ansible on the managed node is installed
 and a specific ansible user is created with a random password. It must be and
@@ -9,7 +11,7 @@ authentication method is the public key.
 It is assumed your ansible deployment machine is running Linux or macOS,
 because Windows is not supported for the control node.
 
-# First, create a SSH key on your local machine
+## First, create a SSH key on your local machine
 
 The SSH key authenticates you on your Raspberry Pi OS or Rocky Linux in a
 secure way. If you already have one, you can skip this section.
@@ -22,11 +24,11 @@ secure way. If you already have one, you can skip this section.
 
 Keep your private key file in a safe place!
 
-# Install your operating system
+## Install your operating system
 
 You will need [Balena Etcher](https://www.balena.io/etcher/) to flash your SD card.
 
-## Rocky Linux
+### Rocky Linux
 
 Download the [Rocky Linux for Raspberry
 Pi](https://rockylinux.org/alternative-images). As the time of writing, the
@@ -38,7 +40,7 @@ Boot your Raspberry Pi, find your IP address and check the password
 (rockylinux) is working by connecting with SSH: `ssh
 rocky@your.raspberrypi.hostname.or.ip`.
 
-## Raspberry Pi OS
+### Raspberry Pi OS
 
 Download the [Raspberry Pi OS
 image](https://www.raspberrypi.com/software/operating-systems/), choose the
@@ -53,14 +55,14 @@ Remount your SD card and find the mount point, on macOS, it will be
 This entire section must be repeated on each Raspberry Pi you want to manage
 with ansible.
 
-### Enable SSH at boot on Raspberry Pi OS
+#### Enable SSH at boot on Raspberry Pi OS
 
 Just create a `ssh` file in the `boot` partition.
 
     # example, on macOS, find yours, if you are on Linux
     touch /Volumes/boot/ssh
 
-### Create a pi user, with a temporary password on Raspberry Pi OS
+#### Create a pi user, with a temporary password on Raspberry Pi OS
 
 Create a `pi` user with a temporary password by creating a `userconf` file in
 the `boot` partition with the specified content.
@@ -78,7 +80,7 @@ the `boot` partition with the specified content.
 Boot your Raspberry Pi, find your IP address and check the password is working
 by connecting with SSH: `ssh pi@your.raspberrypi.hostname.or.ip`.
 
-# Install python packages from requirements.txt file
+## Install python packages from requirements.txt file
 
 On the ansible manager machine, create a python virtual environment
 ([python}](https://www.python.org/downloads/) 3.8 or newer). This step only
@@ -101,13 +103,13 @@ Then, install the requirements with pip.
 
     pip install -r requirements.txt
 
-# Create ansible hosts file
+## Create ansible hosts file
 
 Just copy `inventory/hosts.sample` to `inventory/hosts` (warning, there is a
 `.gitignore` rule on this filename) and edit its content or copy it to another
 location.
 
-# Set environment variables
+## Set environment variables
 
 You will have to export some environment variables directly in you shell or you
 may use [direnv](https://github.com/direnv/direnv).
@@ -129,7 +131,7 @@ file will be dropped.
     # export more than one key
     export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
 
-# Test the ansible connection
+## Test the ansible connection
 
 Playbook must be run in two steps, using subsets. The defined password will be
 prompted.
@@ -138,7 +140,7 @@ prompted.
 
     ansible rockylinux -m ping -u rocky --ask-pass
 
-# Bootstrap time
+## Bootstrap time
 
 Now, boostrap by using the bootstrap playbook. Playbook must be run in two
 steps, using subsets.
@@ -156,7 +158,7 @@ password.
     # become root
     sudo -i
 
-# Caveats
+## Caveats
 
 You may encounter problems with packages manager if your system date is wrong.
 To set the date on all hosts, you may run these ad hoc commands. The new date
