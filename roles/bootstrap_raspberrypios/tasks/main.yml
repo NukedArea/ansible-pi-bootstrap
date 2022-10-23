@@ -1,40 +1,44 @@
 ---
 
+- name: Update apt
+  ansible.builtin.raw: apt update
+  changed_when: true
+
 - name: Raw install python and python3-apt
-  ansible.builtin.raw: apt update && apt install -y python3 python3-apt
+  ansible.builtin.raw: apt install -y python3 python3-apt
+  changed_when: true
 
 - name: Install sudo command
   ansible.builtin.apt:
     name: sudo
-    state: latest
-    update_cache: yes
+    update_cache: true
 
-- name: Create {{ deploy_account }} user with random password
+- name: Create deploy user with random password
   ansible.builtin.user:
     name: '{{ deploy_account }}'
     group: '{{ deploy_group }}'
-    comment: '{{ deploy_account }} is used to deploy'
+    comment: '{{ deploy_account }} is used to deploy'
     shell: /bin/bash
     password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,ascii_uppercase,digits length=32') | password_hash('sha512', rounds=2048) }}"
     update_password: on_create
 
-- name: Install ssh public key for {{ deploy_account }} user
+- name: Install ssh public key for deploy user
   ansible.posix.authorized_key:
     user: '{{ deploy_account }}'
     state: present
-    exclusive: yes
+    exclusive: true
     key: "{% for key in lookup('env', 'SSH_PUBKEYS_TO_INSTALL').split(':') %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
 
-- name: Enable {{ deploy_account }} to use sudo without password
+- name: Enable deploy user to use sudo without password
   ansible.builtin.template:
     src: sudo/deploy-user.j2
     dest: /etc/sudoers.d/{{ deploy_account }}-user
     owner: root
     group: root
-    mode: '0440'
-    validate: 'visudo -cf %s'
+    mode: '440'
+    validate: visudo -cf %s
 
-- name: Set random password for {{ bootstrap_remote_user }}
+- name: Set random password for bootstrap user
   ansible.builtin.user:
     name: '{{ bootstrap_remote_user }}'
     password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,ascii_uppercase,digits length=32') | password_hash('sha512', rounds=2048) }}"
