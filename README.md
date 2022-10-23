@@ -172,3 +172,19 @@ playbook, but this will be enough to fix the date problem for now.
     ansible rockylinux -u rocky -b --ask-pass --ask-become-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"
 
 Then, run the bootstrap section again.
+
+## Development
+
+This repository uses [pre-commit](https://pre-commit.com/) hooks and
+[ansible-lint](https://ansible-lint.readthedocs.io/). Install the requirements
+with pip.
+
+    pip install -r requirements.dev.txt
+
+Then install hooks.
+
+    pre-commit install
+
+To lint, just run this command or do a commit.
+
+    pre-commit run --all-files
