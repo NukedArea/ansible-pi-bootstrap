@@ -67,7 +67,7 @@ Just create a `ssh` file in the `boot` partition.
 Create a `pi` user with a temporary password by creating a `userconf` file in
 the `boot` partition with the specified content.
 
-    # if your want a different temporary password, generate one with openssl
+    # if you want a different temporary password, generate one with openssl
     # (on macOS, you may need to install another openssl version with
     # https://brew.sh/).
 
@@ -83,7 +83,7 @@ by connecting with SSH: `ssh pi@your.raspberrypi.hostname.or.ip`.
 ## Install python packages from requirements.txt file
 
 On the ansible manager machine, create a python virtual environment
-([python}](https://www.python.org/downloads/) 3.8 or newer). This step only
+([python](https://www.python.org/downloads/) 3.8 or newer). This step only
 needs to be done once. You may use [pyenv](https://github.com/pyenv/pyenv) or
 what you prefer.
 
