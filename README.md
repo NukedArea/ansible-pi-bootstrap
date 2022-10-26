@@ -32,7 +32,7 @@ You will need [Balena Etcher](https://www.balena.io/etcher/) to flash your SD ca
 
 Download the [Rocky Linux for Raspberry
 Pi](https://rockylinux.org/alternative-images). As the time of writing, the
-available version is 8.5. Use Balena Etcher to flash the image on your SD card.
+available version is 9.0. Use Balena Etcher to flash the image on your SD card.
 
 That's the only thing you have to do with Rocky Linux for Raspberry Pi.
 
