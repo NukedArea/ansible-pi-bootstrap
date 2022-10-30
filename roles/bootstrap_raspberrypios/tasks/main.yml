@@ -1,5 +1,14 @@
 ---
 
+- name: Check that ssh public keys are provided
+  ansible.builtin.fail:
+    msg: ssh_pubkeys_to_install array must not be empty!
+  when: ssh_pubkeys_to_install is not iterable or ssh_pubkeys_to_install | length == 0
+
+- name: Provided ssh public keys
+  ansible.builtin.debug:
+    msg: '{{ ssh_pubkeys_to_install }}'
+
 - name: Update apt
   ansible.builtin.raw: apt update
   changed_when: true
@@ -27,7 +36,7 @@
     user: '{{ deploy_account }}'
     state: present
     exclusive: true
-    key: "{% for key in lookup('env', 'SSH_PUBKEYS_TO_INSTALL').split(':') %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
+    key: "{% for key in ssh_pubkeys_to_install %}{{ lookup('file', key) ~ '\n'}}{% endfor %}"
 
 - name: Enable deploy user to use sudo without password
   ansible.builtin.template:

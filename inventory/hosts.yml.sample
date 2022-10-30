@@ -1,0 +1,16 @@
+# put here servers you have to bootstrap
+all:
+  hosts:
+  vars:
+    # put here your public key(s) to install on each host
+    ssh_pubkeys_to_install:
+      - /home/yourlogin/.ssh/ansible_key.pub
+      - /home/yourlogin/.ssh/another_key.pub
+  children:
+    raspberrypios:
+      hosts:
+        192.168.1.1
+        my.rpi.local
+    rockylinux:
+      hosts:
+        192.168.1.2

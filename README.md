@@ -103,33 +103,37 @@ Then, install the requirements with pip.
 
     pip install -r requirements.txt
 
-## Create ansible hosts file
+## Create inventory file
 
-Just copy `inventory/hosts.sample` to `inventory/hosts` (warning, there is a
-`.gitignore` rule on this filename) and edit its content or copy it to another
-location.
+Just copy `inventory/hosts.yml.sample` to `inventory/hosts.yml` (warning, there
+is a `.gitignore` rule on this filename) and edit its content or copy it to
+another location.
 
-## Set environment variables
+## Set path to your public SSH keys
 
-You will have to export some environment variables directly in you shell or you
-may use [direnv](https://github.com/direnv/direnv).
+Set path to your public SSH key(s) in the inventory file. The public keys will
+be installed on the ansible user `authorized_keys` file. Just put one public
+key per line. Warning, this process is exclusive. Old public keys already
+present in the `authorized_keys` file will be dropped.
+
+    all:
+      hosts:
+      vars:
+        ssh_pubkeys_to_install:
+          - /home/yourlogin/.ssh/ansible_key.pub
+          - /home/yourlogin/.ssh/another_key.pub
+
+If `ssh_pubkeys_to_install` is left empty, the playbook will fail.
+
+## Set ANSIBLE\_INVENTORY environment variable
+
+You will have to export ANSIBLE\_INVENTORY environment variables directly in
+your shell or you may use [direnv](https://github.com/direnv/direnv).
 
 Set `ANSIBLE_INVENTORY` to point to your inventory file according to your
 choice above.
 
-    export ANSIBLE_INVENTORY=${PWD}/inventory/hosts
-
-Set path to your public SSH keys. The public keys will be installed on the
-ansible user `authorized_keys` file. If you want to install more than one
-public keys, just separate them with a colon character `:`. Warning, this
-process is exclusive. Old public keys already present in the `authorized_keys`
-file will be dropped.
-
-    # export only one key
-    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub
-
-    # export more than one key
-    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
+    export ANSIBLE_INVENTORY=${PWD}/inventory/hosts.yml
 
 ## Test the ansible connection
 
