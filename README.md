@@ -1,4 +1,4 @@
-# ansible-pi-bootstrap version 1.0.0
+# ansible-pi-bootstrap version 1.1.0
 
 This ansible project allows to bootstrap a Raspberry Pi OS or Rocky Linux. That
 means that everything needed to run ansible on the managed node is installed
