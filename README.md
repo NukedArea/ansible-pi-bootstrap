@@ -1,4 +1,4 @@
-# ansible-pi-bootstrap version 1.0.0
+# ansible-pi-bootstrap version 1.1.0
 
 This ansible project allows to bootstrap a Raspberry Pi OS or Rocky Linux. That
 means that everything needed to run ansible on the managed node is installed
@@ -32,7 +32,7 @@ You will need [Balena Etcher](https://www.balena.io/etcher/) to flash your SD ca
 
 Download the [Rocky Linux for Raspberry
 Pi](https://rockylinux.org/alternative-images). As the time of writing, the
-available version is 8.5. Use Balena Etcher to flash the image on your SD card.
+available version is 9.0. Use Balena Etcher to flash the image on your SD card.
 
 That's the only thing you have to do with Rocky Linux for Raspberry Pi.
 
@@ -67,7 +67,7 @@ Just create a `ssh` file in the `boot` partition.
 Create a `pi` user with a temporary password by creating a `userconf` file in
 the `boot` partition with the specified content.
 
-    # if your want a different temporary password, generate one with openssl
+    # if you want a different temporary password, generate one with openssl
     # (on macOS, you may need to install another openssl version with
     # https://brew.sh/).
 
@@ -83,7 +83,7 @@ by connecting with SSH: `ssh pi@your.raspberrypi.hostname.or.ip`.
 ## Install python packages from requirements.txt file
 
 On the ansible manager machine, create a python virtual environment
-([python}](https://www.python.org/downloads/) 3.8 or newer). This step only
+([python](https://www.python.org/downloads/) 3.8 or newer). This step only
 needs to be done once. You may use [pyenv](https://github.com/pyenv/pyenv) or
 what you prefer.
 
@@ -103,33 +103,37 @@ Then, install the requirements with pip.
 
     pip install -r requirements.txt
 
-## Create ansible hosts file
+## Create inventory file
 
-Just copy `inventory/hosts.sample` to `inventory/hosts` (warning, there is a
-`.gitignore` rule on this filename) and edit its content or copy it to another
-location.
+Just copy `inventory/hosts.yml.sample` to `inventory/hosts.yml` (warning, there
+is a `.gitignore` rule on this filename) and edit its content or copy it to
+another location.
 
-## Set environment variables
+## Set path to your public SSH keys
 
-You will have to export some environment variables directly in you shell or you
-may use [direnv](https://github.com/direnv/direnv).
+Set path to your public SSH key(s) in the inventory file. The public keys will
+be installed on the ansible user `authorized_keys` file. Just put one public
+key per line. Warning, this process is exclusive. Old public keys already
+present in the `authorized_keys` file will be dropped.
+
+    all:
+      hosts:
+      vars:
+        ssh_pubkeys_to_install:
+          - /home/yourlogin/.ssh/ansible_key.pub
+          - /home/yourlogin/.ssh/another_key.pub
+
+If `ssh_pubkeys_to_install` is left empty, the playbook will fail.
+
+## Set ANSIBLE\_INVENTORY environment variable
+
+You will have to export ANSIBLE\_INVENTORY environment variables directly in
+your shell or you may use [direnv](https://github.com/direnv/direnv).
 
 Set `ANSIBLE_INVENTORY` to point to your inventory file according to your
 choice above.
 
-    export ANSIBLE_INVENTORY=${PWD}/inventory/hosts
-
-Set path to your public SSH keys. The public keys will be installed on the
-ansible user `authorized_keys` file. If you want to install more than one
-public keys, just separate them with a colon character `:`. Warning, this
-process is exclusive. Old public keys already present in the `authorized_keys`
-file will be dropped.
-
-    # export only one key
-    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub
-
-    # export more than one key
-    export SSH_PUBKEYS_TO_INSTALL=${HOME}/.ssh/ansible_key.pub:${HOME}/.ssh/another_key.pub
+    export ANSIBLE_INVENTORY=${PWD}/inventory/hosts.yml
 
 ## Test the ansible connection
 
@@ -172,3 +176,19 @@ playbook, but this will be enough to fix the date problem for now.
     ansible rockylinux -u rocky -b --ask-pass --ask-become-pass -m ansible.builtin.raw -a "date +%s -s @$(date +%s)"
 
 Then, run the bootstrap section again.
+
+## Development
+
+This repository uses [pre-commit](https://pre-commit.com/) hooks and
+[ansible-lint](https://ansible-lint.readthedocs.io/). Install the requirements
+with pip.
+
+    pip install -r requirements.dev.txt
+
+Then install hooks.
+
+    pre-commit install
+
+To lint, just run this command or do a commit.
+
+    pre-commit run --all-files
