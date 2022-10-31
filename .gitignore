@@ -1,4 +1,4 @@
 .envrc
 /.python-version
 /ansible.log
-/inventory/hosts
+/inventory/hosts.yml
